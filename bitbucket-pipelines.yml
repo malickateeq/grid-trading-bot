@@ -1,0 +1,38 @@
+image: node:16.14.2-alpine
+pipelines:
+  branches:
+    dev:
+      - step:
+          name: 'Deploy Trading Bot to AWS EC2'
+          caches:
+            - node
+          script:
+            - rm -rf package-lock.json
+            - rm -rf yarn.lock
+            - npm install
+            - npm update
+
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: 'ubuntu'
+                SSH_PORT: '22'
+                SERVER: '54.211.107.66'
+                SSH_KEY: '${DEV_SERVER_SSH_KEY}'
+                COMMAND: 'sudo chmod -R 777 /var/www/burency && sudo rm -rf  /var/www/burency/${BITBUCKET_REPO_SLUG} &&  sudo mkdir /var/www/burency/${BITBUCKET_REPO_SLUG}  && sudo chmod -R 777 /var/www/burency'
+
+            - pipe: atlassian/scp-deploy:1.2.1
+              variables:
+                SSH_USER: 'ubuntu'
+                USER: 'ubuntu'
+                SERVER: '54.211.107.66'
+                REMOTE_PATH: '/var/www/burency/${BITBUCKET_REPO_SLUG}'
+                LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/'
+                SSH_KEY: '${DEV_SERVER_SSH_KEY}'
+
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: 'ubuntu'
+                SSH_PORT: '22'
+                SERVER: '54.211.107.66'
+                SSH_KEY: '${DEV_SERVER_SSH_KEY}'
+                COMMAND: 'cd /var/www/burency &&  sudo ./start-trading-bot.sh'

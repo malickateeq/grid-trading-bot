@@ -1,0 +1,73 @@
+{
+    "USER_SERVICE": {
+        "service": "USERS",
+        "provider": "UserService",
+        "operations": {
+            "GET": {
+                "hanlder": "users"
+            },
+            "CREATE_USER": {
+                "hanlder": "createUser"
+            },
+            "UPDATE_USER": {
+                "hanlder": "updateUser"
+            },
+            "DELETE_USER": {
+                "hanlder": "deleteUser"
+            },
+            "UPDATE_USER_EMAIL": {
+                "hanlder": "updateUserEmail"
+            },
+            "UPDATE_USER_PHONE": {
+                "hanlder": "updateUserPhone"
+            }
+        }
+    },
+
+    "AUTH": {
+        "service": "AUTH",
+        "provider": "UserService",
+        "operations": {
+            "USER_REGISTERED": {
+                "hanlder": "createUser"
+            }
+        }
+    },
+
+    "AUTH_SERVICE": {
+        "service": "AUTH",
+        "provider": "AuthService",
+        "global": true,
+        "operations": {
+            "SYNC_PERMISSION": {
+                "hanlder": "syncPermission"
+            },
+            "UPDATE_APIDETAIL": {
+                "hanlder": "updateApiDetail"
+            },
+            "DELETE_APIDETAIL": {
+                "hanlder": "deleteApiDetail"
+            }
+        }
+    },
+
+    "ORDR": {
+        "service": "ORDR",
+        "provider": "OrderService",
+        "operations": {
+            "ORDER_CREATED": {
+                "hanlder": "executeOrder"
+            }
+        }
+    },
+
+    "TRNX": {
+        "service": "TRNX",
+        "provider": "TransactionService",
+        "operations": {
+            "TRANSACTION_CREATED": {
+                "hanlder": "processTransaction"
+            }
+        }
+    }
+}
